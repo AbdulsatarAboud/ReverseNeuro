@@ -53,6 +53,13 @@ def getDataSamples(EEG_samples, partic_id):
 
     return epoches, lables
 
+def normalizeSamples(EEG_samples):
+
+    mean = np.mean(EEG_samples)
+    std = np.std(EEG_samples)
+
+    return (EEG_samples - mean)/std
+
 def generateTrainTest(EEG_samples, LOU_subject_id):
     train_data_set, train_label_set = [], []
     no_participants = EEG_samples.shape[1]
@@ -65,14 +72,17 @@ def generateTrainTest(EEG_samples, LOU_subject_id):
             else:
                 train_data_set = np.concatenate((train_data_set, epoches), axis=0)
                 train_data_set = np.nan_to_num(train_data_set, nan=0) # replace nan values with 0
+                train_data_set = normalizeSamples(train_data_set) # normalize the data
 
                 train_label_set = np.concatenate((train_label_set, lables), axis=0)
         else:
             test_data_set, test_label_set = getDataSamples(EEG_samples, partic_id)
             test_data_set = np.nan_to_num(test_data_set, nan=0) # replace nan values with 0
+            test_data_set = normalizeSamples(test_data_set) # normalize the data
 
             valid_data_set, valid_label_set = getDataSamples(EEG_samples, partic_id)
             valid_data_set = np.nan_to_num(valid_data_set, nan=0) # replace nan values with 0
+            valid_data_set = normalizeSamples(valid_data_set) # normalize the data
 
     train_data_set, train_label_set = balanceClasses(train_data_set, train_label_set) # for ensuring a 50:50 ratio between sick and non-sick
 
@@ -158,7 +168,7 @@ def eval(net, data_loader, file_name=[]):
     loss_function = torch.nn.CrossEntropyLoss()
     # TODO: build your SGD optimizer with learning rate=0.01, momentum=0.9
     # your code here
-    optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9, weight_decay=np.exp(-7))
+    optimizer = torch.optim.SGD(net.parameters(), lr=0.002, momentum=0.9, weight_decay=np.exp(-7))
     use_cuda = torch.cuda.is_available()
     if use_cuda:
         net = net.cuda()
@@ -189,7 +199,7 @@ def train(net, train_loader, valid_loader, epoches, file_name):
     # TODO: build your SGD optimizer with learning rate=0.01, momentum=0.9
     # your code here
     optimizer = torch.optim.SGD(net.parameters(), lr=0.002, momentum=0.9, weight_decay=np.exp(-7))
-    optimizer = torch.optim.RMSprop(net.parameters(), lr=0.002, momentum=0.9, weight_decay=np.exp(-7))
+    # optimizer = torch.optim.RMSprop(net.parameters(), lr=0.002, momentum=0.9, weight_decay=np.exp(-7))
     # optimizer = torch.optim.Adam(net.parameters(), lr=0.01, betas=(0.9, 0.999), eps=1e-8, weight_decay=0.0)
 
     use_cuda = torch.cuda.is_available()
