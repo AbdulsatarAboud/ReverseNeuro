@@ -1,0 +1,1 @@
+optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9, weight_decay=np.exp(-7))

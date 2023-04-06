@@ -1,0 +1,84 @@
+-------- INFORMATION ON THE DATA ---------
+Shapes
+Train Data: (12118, 22, 250) Train Lable: (12118, 1)
+Test Data: (457, 22, 250) Test Lable: (457, 1)
+***********************************************************************************
+Number of NANs in the data
+Train Data: 0 Train Lable: 0
+Test Data: 0 Test Lable: 0
+***********************************************************************************
+Some stats on the data
+Number of 'non sick' samples: 6288
+Count voltage values > 10,000: 0
+Count voltage values < -10,000: 0
+**************************************** FULL DATASET *******************************************
+Number of 'sick' samples: 6287
+Number of 'non sick' samples: 6288
+Maximum Value in Data Set: 971.38556
+Minimum Value in Data Set: -1160.9303
+Mean Value in Data Set: -0.26039916
+Standard Daviation in Data Set: 32.172203
+************************************* TRAINING DATASET **********************************************
+Number of 'sick' samples: 6059
+Number of 'non sick' samples: 6059
+Maximum Value in Training Set: 971.38556
+Minimum Value in Data Set: -1160.9303
+Mean Value in Data Set: -0.23365633
+Standard Daviation in Data Set: 32.268227
+*************************************** TESTING DATASET ********************************************
+Number of 'sick' samples: 228
+Number of 'non sick' samples: 229
+Maximum Value in Testing Set: 698.8782
+Minimum Value in Data Set: -604.74994
+Mean Value in Data Set: -0.96952814
+Standard Daviation in Data Set: 29.502298
+epoch: 0, lr: 0.01, accuracy: tensor(0.5641, device='cuda:0'), loss: 0.6788833737373352, valid accuracy: tensor(0.4661, device='cuda:0')
+epoch: 1, lr: 0.01, accuracy: tensor(0.6439, device='cuda:0'), loss: 0.6297474503517151, valid accuracy: tensor(0.5011, device='cuda:0')
+epoch: 2, lr: 0.01, accuracy: tensor(0.7094, device='cuda:0'), loss: 0.6575894951820374, valid accuracy: tensor(0.4989, device='cuda:0')
+epoch: 3, lr: 0.01, accuracy: tensor(0.7217, device='cuda:0'), loss: 0.5990980267524719, valid accuracy: tensor(0.5142, device='cuda:0')
+epoch: 4, lr: 0.01, accuracy: tensor(0.7514, device='cuda:0'), loss: 0.6283897161483765, valid accuracy: tensor(0.4880, device='cuda:0')
+epoch: 5, lr: 0.01, accuracy: tensor(0.7642, device='cuda:0'), loss: 0.465374231338501, valid accuracy: tensor(0.4814, device='cuda:0')
+epoch: 6, lr: 0.01, accuracy: tensor(0.7729, device='cuda:0'), loss: 0.4622131288051605, valid accuracy: tensor(0.4945, device='cuda:0')
+epoch: 7, lr: 0.01, accuracy: tensor(0.7755, device='cuda:0'), loss: 0.5067475438117981, valid accuracy: tensor(0.4902, device='cuda:0')
+epoch: 8, lr: 0.01, accuracy: tensor(0.7886, device='cuda:0'), loss: 0.5859063863754272, valid accuracy: tensor(0.4945, device='cuda:0')
+epoch: 9, lr: 0.01, accuracy: tensor(0.7934, device='cuda:0'), loss: 0.48815596103668213, valid accuracy: tensor(0.4770, device='cuda:0')
+epoch: 10, lr: 0.01, accuracy: tensor(0.8035, device='cuda:0'), loss: 0.5373615622520447, valid accuracy: tensor(0.4902, device='cuda:0')
+epoch: 11, lr: 0.01, accuracy: tensor(0.8085, device='cuda:0'), loss: 0.5385298132896423, valid accuracy: tensor(0.5033, device='cuda:0')
+epoch: 12, lr: 0.01, accuracy: tensor(0.7997, device='cuda:0'), loss: 0.4374432861804962, valid accuracy: tensor(0.4836, device='cuda:0')
+epoch: 13, lr: 0.01, accuracy: tensor(0.8204, device='cuda:0'), loss: 0.44957587122917175, valid accuracy: tensor(0.5055, device='cuda:0')
+epoch: 14, lr: 0.01, accuracy: tensor(0.8170, device='cuda:0'), loss: 0.45841965079307556, valid accuracy: tensor(0.4814, device='cuda:0')
+epoch: 15, lr: 0.01, accuracy: tensor(0.8337, device='cuda:0'), loss: 0.5682792067527771, valid accuracy: tensor(0.4792, device='cuda:0')
+epoch: 16, lr: 0.01, accuracy: tensor(0.8307, device='cuda:0'), loss: 0.518315315246582, valid accuracy: tensor(0.4683, device='cuda:0')
+epoch: 17, lr: 0.01, accuracy: tensor(0.8281, device='cuda:0'), loss: 0.4364801347255707, valid accuracy: tensor(0.5033, device='cuda:0')
+epoch: 18, lr: 0.01, accuracy: tensor(0.8441, device='cuda:0'), loss: 0.3818610608577728, valid accuracy: tensor(0.4836, device='cuda:0')
+epoch: 19, lr: 0.01, accuracy: tensor(0.8407, device='cuda:0'), loss: 0.39719298481941223, valid accuracy: tensor(0.4792, device='cuda:0')
+epoch: 20, lr: 0.01, accuracy: tensor(0.8431, device='cuda:0'), loss: 0.46845743060112, valid accuracy: tensor(0.4595, device='cuda:0')
+epoch: 21, lr: 0.01, accuracy: tensor(0.8435, device='cuda:0'), loss: 0.3998604714870453, valid accuracy: tensor(0.4814, device='cuda:0')
+epoch: 22, lr: 0.01, accuracy: tensor(0.8520, device='cuda:0'), loss: 0.44391903281211853, valid accuracy: tensor(0.4880, device='cuda:0')
+epoch: 23, lr: 0.01, accuracy: tensor(0.8499, device='cuda:0'), loss: 0.47744494676589966, valid accuracy: tensor(0.4683, device='cuda:0')
+epoch: 24, lr: 0.01, accuracy: tensor(0.8596, device='cuda:0'), loss: 0.4456768035888672, valid accuracy: tensor(0.4836, device='cuda:0')
+epoch: 25, lr: 0.01, accuracy: tensor(0.8504, device='cuda:0'), loss: 0.3957791328430176, valid accuracy: tensor(0.4683, device='cuda:0')
+epoch: 26, lr: 0.01, accuracy: tensor(0.8628, device='cuda:0'), loss: 0.4596068263053894, valid accuracy: tensor(0.4814, device='cuda:0')
+epoch: 27, lr: 0.01, accuracy: tensor(0.8560, device='cuda:0'), loss: 0.40825358033180237, valid accuracy: tensor(0.4967, device='cuda:0')
+epoch: 28, lr: 0.01, accuracy: tensor(0.8648, device='cuda:0'), loss: 0.4265959858894348, valid accuracy: tensor(0.4967, device='cuda:0')
+epoch: 29, lr: 0.01, accuracy: tensor(0.8656, device='cuda:0'), loss: 0.5103448629379272, valid accuracy: tensor(0.4748, device='cuda:0')
+epoch: 30, lr: 0.01, accuracy: tensor(0.8702, device='cuda:0'), loss: 0.4363437592983246, valid accuracy: tensor(0.4770, device='cuda:0')
+epoch: 31, lr: 0.01, accuracy: tensor(0.8665, device='cuda:0'), loss: 0.4502846598625183, valid accuracy: tensor(0.5011, device='cuda:0')
+epoch: 32, lr: 0.01, accuracy: tensor(0.8680, device='cuda:0'), loss: 0.43555721640586853, valid accuracy: tensor(0.4705, device='cuda:0')
+epoch: 33, lr: 0.01, accuracy: tensor(0.8618, device='cuda:0'), loss: 0.45910874009132385, valid accuracy: tensor(0.4770, device='cuda:0')
+epoch: 34, lr: 0.01, accuracy: tensor(0.8798, device='cuda:0'), loss: 0.459428995847702, valid accuracy: tensor(0.4967, device='cuda:0')
+epoch: 35, lr: 0.01, accuracy: tensor(0.8712, device='cuda:0'), loss: 0.40914273262023926, valid accuracy: tensor(0.5055, device='cuda:0')
+epoch: 36, lr: 0.01, accuracy: tensor(0.8787, device='cuda:0'), loss: 0.48031580448150635, valid accuracy: tensor(0.4858, device='cuda:0')
+epoch: 37, lr: 0.01, accuracy: tensor(0.8739, device='cuda:0'), loss: 0.43102213740348816, valid accuracy: tensor(0.4333, device='cuda:0')
+epoch: 38, lr: 0.01, accuracy: tensor(0.8760, device='cuda:0'), loss: 0.4312573969364166, valid accuracy: tensor(0.4705, device='cuda:0')
+epoch: 39, lr: 0.01, accuracy: tensor(0.8751, device='cuda:0'), loss: 0.46285513043403625, valid accuracy: tensor(0.4880, device='cuda:0')
+epoch: 40, lr: 0.01, accuracy: tensor(0.8831, device='cuda:0'), loss: 0.4189150333404541, valid accuracy: tensor(0.4420, device='cuda:0')
+epoch: 41, lr: 0.01, accuracy: tensor(0.8725, device='cuda:0'), loss: 0.46828725934028625, valid accuracy: tensor(0.4486, device='cuda:0')
+epoch: 42, lr: 0.01, accuracy: tensor(0.8818, device='cuda:0'), loss: 0.4104657769203186, valid accuracy: tensor(0.5033, device='cuda:0')
+epoch: 43, lr: 0.01, accuracy: tensor(0.8845, device='cuda:0'), loss: 0.43935951590538025, valid accuracy: tensor(0.4595, device='cuda:0')
+epoch: 44, lr: 0.01, accuracy: tensor(0.8740, device='cuda:0'), loss: 0.4162974953651428, valid accuracy: tensor(0.4420, device='cuda:0')
+epoch: 45, lr: 0.01, accuracy: tensor(0.8865, device='cuda:0'), loss: 0.372170090675354, valid accuracy: tensor(0.4442, device='cuda:0')
+epoch: 46, lr: 0.01, accuracy: tensor(0.8857, device='cuda:0'), loss: 0.35169878602027893, valid accuracy: tensor(0.4639, device='cuda:0')
+epoch: 47, lr: 0.01, accuracy: tensor(0.8845, device='cuda:0'), loss: 0.3952855169773102, valid accuracy: tensor(0.4617, device='cuda:0')
+epoch: 48, lr: 0.01, accuracy: tensor(0.8842, device='cuda:0'), loss: 0.4157423675060272, valid accuracy: tensor(0.4508, device='cuda:0')
+epoch: 49, lr: 0.01, accuracy: tensor(0.8902, device='cuda:0'), loss: 0.4447980225086212, valid accuracy: tensor(0.4639, device='cuda:0')
