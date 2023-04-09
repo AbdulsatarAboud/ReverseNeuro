@@ -66,15 +66,16 @@ def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
     for partic_id in range(0,no_participants):
         if LOU_subject_id != partic_id:
             epoches, lables = getDataSamples(EEG_samples, partic_id)
+
+            if normalize:
+                    epoches = normalizeSamples(epoches) # normalize the data
+
             if not np.any(train_data_set):
                 train_data_set = epoches
                 train_label_set = lables
             else:
                 train_data_set = np.concatenate((train_data_set, epoches), axis=0)
                 train_data_set = np.nan_to_num(train_data_set, nan=0) # replace nan values with 0
-                if normalize:
-                    train_data_set = normalizeSamples(train_data_set) # normalize the data
-
                 train_label_set = np.concatenate((train_label_set, lables), axis=0)
         else:
             test_data_set, test_label_set = getDataSamples(EEG_samples, partic_id)
