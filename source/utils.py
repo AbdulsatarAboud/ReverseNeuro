@@ -68,7 +68,7 @@ def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
             epoches, lables = getDataSamples(EEG_samples, partic_id)
 
             if normalize:
-                    epoches = normalizeSamples(epoches) # normalize the data
+                epoches = normalizeSamples(epoches) # normalize the data
 
             if not np.any(train_data_set):
                 train_data_set = epoches
@@ -169,10 +169,6 @@ def generateTorchLoaders(data_set, data_label, EEGDataset):
 
 # evaluation function
 def eval(net, data_loader, file_name=[]):
-    loss_function = torch.nn.CrossEntropyLoss()
-    # TODO: build your SGD optimizer with learning rate=0.01, momentum=0.9
-    # your code here
-    optimizer = torch.optim.SGD(net.parameters(), lr=0.002, momentum=0.9, weight_decay=np.exp(-7))
     use_cuda = torch.cuda.is_available()
     if use_cuda:
         net = net.cuda()
