@@ -72,8 +72,6 @@ def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
             else:
                 train_data_set = np.concatenate((train_data_set, epoches), axis=0)
                 train_data_set = np.nan_to_num(train_data_set, nan=0) # replace nan values with 0
-                if normalize:
-                    train_data_set = normalizeSamples(train_data_set) # normalize the data
 
                 train_label_set = np.concatenate((train_label_set, lables), axis=0)
         else:
@@ -88,6 +86,9 @@ def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
                 valid_data_set = normalizeSamples(valid_data_set) # normalize the data
 
     train_data_set, train_label_set = balanceClasses(train_data_set, train_label_set) # for ensuring a 50:50 ratio between sick and non-sick
+
+    if normalize:
+        train_data_set = normalizeSamples(train_data_set) # normalize the data
 
     data_set = np.concatenate((train_data_set, test_data_set), axis=0)
     label_set = np.concatenate((train_label_set, test_label_set), axis=0)
