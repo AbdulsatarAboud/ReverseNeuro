@@ -58,6 +58,10 @@ def normalizeSamples(EEG_samples):
     mean = np.mean(EEG_samples)
     std = np.std(EEG_samples)
 
+    return mean, std, (EEG_samples - mean)/std
+
+def normalizeSamplesWithParams(mean, std, EEG_samples):
+
     return (EEG_samples - mean)/std
 
 def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
@@ -77,18 +81,18 @@ def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
         else:
             test_data_set, test_label_set = getDataSamples(EEG_samples, partic_id)
             test_data_set = np.nan_to_num(test_data_set, nan=0) # replace nan values with 0
-            if normalize:
-                test_data_set = normalizeSamples(test_data_set) # normalize the data
 
             valid_data_set, valid_label_set = getDataSamples(EEG_samples, partic_id)
             valid_data_set = np.nan_to_num(valid_data_set, nan=0) # replace nan values with 0
-            if normalize:
-                valid_data_set = normalizeSamples(valid_data_set) # normalize the data
+            
 
     train_data_set, train_label_set = balanceClasses(train_data_set, train_label_set) # for ensuring a 50:50 ratio between sick and non-sick
 
     if normalize:
-        train_data_set = normalizeSamples(train_data_set) # normalize the data
+        # normalize the data
+        mean, std, train_data_set = normalizeSamples(train_data_set) 
+        valid_data_set = normalizeSamplesWithParams(mean, std, valid_data_set)
+        test_data_set = normalizeSamplesWithParams(mean, std, test_data_set)
 
     data_set = np.concatenate((train_data_set, test_data_set), axis=0)
     label_set = np.concatenate((train_label_set, test_label_set), axis=0)
