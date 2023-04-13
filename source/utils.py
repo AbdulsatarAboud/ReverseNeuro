@@ -55,14 +55,10 @@ def getDataSamples(EEG_samples, partic_id):
 
 def normalizeSamples(EEG_samples):
 
-    mean = np.mean(EEG_samples)
-    std = np.std(EEG_samples)
+    max = np.max(EEG_samples)
+    min = np.min(EEG_samples)
 
-    return mean, std, (EEG_samples - mean)/std
-
-def normalizeSamplesWithParams(mean, std, EEG_samples):
-
-    return (EEG_samples - mean)/std
+    return (2 * (EEG_samples - min) / (max - min)) - 1
 
 def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
     train_data_set, train_label_set = [], []
@@ -70,6 +66,10 @@ def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
     for partic_id in range(0,no_participants):
         if LOU_subject_id != partic_id:
             epoches, lables = getDataSamples(EEG_samples, partic_id)
+
+            if normalize:
+                epoches = normalizeSamples(epoches)
+
             if not np.any(train_data_set):
                 train_data_set = epoches
                 train_label_set = lables
@@ -84,15 +84,13 @@ def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
 
             valid_data_set, valid_label_set = getDataSamples(EEG_samples, partic_id)
             valid_data_set = np.nan_to_num(valid_data_set, nan=0) # replace nan values with 0
+
+            if normalize:
+                test_data_set = normalizeSamples(test_data_set)
+                valid_data_set = normalizeSamples(valid_data_set)
             
 
     train_data_set, train_label_set = balanceClasses(train_data_set, train_label_set) # for ensuring a 50:50 ratio between sick and non-sick
-
-    if normalize:
-        # normalize the data
-        mean, std, train_data_set = normalizeSamples(train_data_set) 
-        valid_data_set = normalizeSamplesWithParams(mean, std, valid_data_set)
-        test_data_set = normalizeSamplesWithParams(mean, std, test_data_set)
 
     data_set = np.concatenate((train_data_set, test_data_set), axis=0)
     label_set = np.concatenate((train_label_set, test_label_set), axis=0)
