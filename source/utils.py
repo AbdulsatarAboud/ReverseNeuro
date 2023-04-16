@@ -58,7 +58,7 @@ def normalizeSamples(EEG_samples):
     max = np.max(EEG_samples)
     min = np.min(EEG_samples)
 
-    return (2 * (EEG_samples - min) / (max - min)) - 1
+    return (EEG_samples - min) / (max - min)
 
 def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
     train_data_set, train_label_set = [], []
