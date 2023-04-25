@@ -1,6 +1,7 @@
 import numpy as np
 import sys
 import torch 
+import h5py
 from torchvision import transforms
 from torch.utils.data import DataLoader
 
@@ -35,6 +36,35 @@ def getDataSamples(EEG_samples, partic_id):
         sick_lables = np.ones((sick.shape[0],1))
 
     if np.any(non_sick):
+        non_sick_lables = np.zeros((non_sick.shape[0], 1))
+
+
+    if (np.any(sick)) and (np.any(non_sick)):
+        epoches = np.concatenate((sick, non_sick), axis=0)
+        lables = np.concatenate((sick_lables, non_sick_lables), axis=0)
+    elif (np.any(sick)) and (not np.any(non_sick)):
+        epoches = sick
+        lables = sick_lables
+    elif (not np.any(sick)) and (np.any(non_sick)):
+        epoches = non_sick
+        lables = non_sick_lables
+
+    epoches = saturateAmplitudes(epoches)
+    epoches = includeChannel(epoches, range(4,20)) # Uncomment to inclead specifi channels
+
+    return epoches, lables
+
+def getDataSamplesByHDF5(EEG_samples):
+    
+    sick, sick_lables = np.array(EEG_samples['sick'][()]), []
+    non_sick, non_sick_lables = np.array(EEG_samples['non_sick'][()]), []
+    
+    if np.any(sick):
+        sick  = sick.transpose(2,1,0)
+        sick_lables = np.ones((sick.shape[0],1))
+
+    if np.any(non_sick):
+        non_sick = non_sick.transpose(2,1,0)
         non_sick_lables = np.zeros((non_sick.shape[0], 1))
 
 
@@ -94,6 +124,49 @@ def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
 
     data_set = np.concatenate((train_data_set, test_data_set), axis=0)
     label_set = np.concatenate((train_label_set, test_label_set), axis=0)
+
+    return [data_set, label_set], [train_data_set, train_label_set], [test_data_set, test_label_set]
+
+def generateTrainTestByFile(filename,  LOU_subject_id, normalize = False): # This generates the Train-Test set using a HDF5 file format
+    file_name = filename
+    train_data_set, train_label_set = [], []
+
+    with h5py.File(file_name, 'r') as f:
+        EEG_samples = f['EEG_samples']['data']
+        no_participants = EEG_samples.shape[0]
+
+        for partic_id in range(0,no_participants):
+            if LOU_subject_id != partic_id:
+                ref = EEG_samples[partic_id][()]
+                HDF5_EEG_samples = f[ref.item()]
+                epoches, lables = getDataSamplesByHDF5(HDF5_EEG_samples)
+
+                if normalize:
+                    epoches = normalizeSamples(epoches)
+
+                if not np.any(train_data_set):
+                    train_data_set = epoches
+                    train_label_set = lables
+                else:
+                    train_data_set = np.concatenate((train_data_set, epoches), axis=0)
+                    train_data_set = np.nan_to_num(train_data_set, nan=0) # replace nan values with 0
+
+                    train_label_set = np.concatenate((train_label_set, lables), axis=0)
+            else:
+                ref = EEG_samples[partic_id][()]
+                HDF5_EEG_samples = f[ref.item()]
+                test_data_set, test_label_set = getDataSamplesByHDF5(HDF5_EEG_samples)
+                test_data_set = np.nan_to_num(test_data_set, nan=0) # replace nan values with 0
+
+                if normalize:
+                    test_data_set = normalizeSamples(test_data_set)
+                    
+                
+
+        train_data_set, train_label_set = balanceClasses(train_data_set, train_label_set) # for ensuring a 50:50 ratio between sick and non-sick
+
+        data_set = np.concatenate((train_data_set, test_data_set), axis=0)
+        label_set = np.concatenate((train_label_set, test_label_set), axis=0)
 
     return [data_set, label_set], [train_data_set, train_label_set], [test_data_set, test_label_set]
 
