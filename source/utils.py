@@ -233,7 +233,7 @@ def appendToFile(info, file):
         file.close()
 
 def generateTorchLoaders(data_set, data_label, EEGDataset):
-    N = 40 #number of batches
+    N = 1000 #number of batches
     W = 0 #worker threads
     data_transform = transforms.Compose([transforms.ToTensor()])
 
