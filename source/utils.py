@@ -5,10 +5,24 @@ import h5py
 from torchvision import transforms
 from torch.utils.data import DataLoader
 
-def saturateAmplitudes(data_set):
-    data_set[data_set > 10000] = 10000
-    data_set[data_set < -10000] = -10000
-    return data_set
+def saturateAmplitudes(data_set, labels):
+
+    # create a filter for that only includes epoches below 100mV
+    mask = np.all((data_set <= 100) & (data_set >= -100), axis=(1,2))
+
+    # Get the indecies that meet the condition
+    selected = np.where(mask)
+
+    # Get the selected epoches
+    filtered = data_set[mask]
+
+    # Get the lables of the selected epoches
+    filtered_lables = labels[selected]
+    
+    # data_set[data_set > 10000] = 10000
+    # data_set[data_set < -10000] = -10000
+
+    return filtered, filtered_lables
 
 def balanceClasses(data_set, label_set):
     zero_indices = np.where(label_set == 0)[0]
@@ -49,8 +63,8 @@ def getDataSamples(EEG_samples, partic_id):
         epoches = non_sick
         lables = non_sick_lables
 
-    epoches = saturateAmplitudes(epoches)
     epoches = includeChannel(epoches, range(4,20)) # Uncomment to inclead specifi channels
+    epoches, lables = saturateAmplitudes(epoches, lables)
 
     return epoches, lables
 
@@ -78,8 +92,9 @@ def getDataSamplesByHDF5(EEG_samples):
         epoches = non_sick
         lables = non_sick_lables
 
-    epoches = saturateAmplitudes(epoches)
     epoches = includeChannel(epoches, range(4,20)) # Uncomment to inclead specifi channels
+    epoches, lables = saturateAmplitudes(epoches, lables)
+    
 
     return epoches, lables
 
@@ -105,7 +120,7 @@ def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
                 train_label_set = lables
             else:
                 train_data_set = np.concatenate((train_data_set, epoches), axis=0)
-                train_data_set = np.nan_to_num(train_data_set, nan=0) # replace nan values with 0
+                # train_data_set = np.nan_to_num(train_data_set, nan=0) # replace nan values with 0
 
                 train_label_set = np.concatenate((train_label_set, lables), axis=0)
         else:

@@ -1,4 +1,4 @@
-Added more sample to the dataset by using different bandpass filter ranges to the EEG data
+Added more sample to the dataset by using different bandpass filter ranges to the EEG data. 0.001,0.1,1,5 - 20,30,40,50
 using specific channels 4 - 19
 Perform normalization per subject. Fix the subject values to be between 0 to 1
 optimizer = torch.optim.SGD(net.parameters(), lr=0.01, momentum=0.9, weight_decay=np.exp(-7))
