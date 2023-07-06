@@ -27,3 +27,5 @@ Calculated Testing Accuracy: tensor(0.3297, device='cuda:0')
 Calculated Testing Accuracy: tensor(0.2892, device='cuda:0')
 Calculated Testing Accuracy: tensor(0.0703, device='cuda:0')
 Calculated Testing Accuracy: tensor(0.0754, device='cuda:0')
+
+Average Accuracy: 0.4586

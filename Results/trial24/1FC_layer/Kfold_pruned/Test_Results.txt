@@ -1,0 +1,2 @@
+Calculated Testing Accuracy: tensor(0.4485, device='cuda:0')
+Calculated Testing Accuracy: tensor(0.4564, device='cuda:0')

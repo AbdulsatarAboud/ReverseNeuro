@@ -37,6 +37,10 @@ def balanceClasses(data_set, label_set):
 
     return data_set[keep_indices,:,:], label_set[keep_indices]
 
+def balanceClasses50(data_set, label_set):
+
+    return data_set, label_set
+
 def includeChannel(data_set, channels):
     return data_set[:,channels,:]
 
@@ -105,42 +109,104 @@ def normalizeSamples(EEG_samples):
 
     return (EEG_samples - min) / (max - min)
 
-def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False):
-    train_data_set, train_label_set = [], []
-    no_participants = EEG_samples.shape[1]
-    for partic_id in range(0,no_participants):
-        if LOU_subject_id != partic_id:
-            epoches, lables = getDataSamples(EEG_samples, partic_id)
+def normalizeWithParameters(EEG_samples, min_value, max_value):
 
-            if normalize:
-                epoches = normalizeSamples(epoches)
+    return (EEG_samples - min_value) / (max_value - min_value)
+
+def generateTrainTest(EEG_samples, LOU_subject_id, normalize = False, LOU = True):
+    train_data_set, train_label_set = [], []
+    test_data_set, test_label_set = [], []
+    no_participants = EEG_samples.shape[1]
+    if(LOU == True):
+        for partic_id in range(0,no_participants):
+            if LOU_subject_id != partic_id:
+                epoches, lables = getDataSamples(EEG_samples, partic_id)
+
+                if normalize:
+                    epoches = normalizeSamples(epoches)
+
+                if not np.any(train_data_set):
+                    train_data_set = epoches
+                    train_label_set = lables
+                else:
+                    train_data_set = np.concatenate((train_data_set, epoches), axis=0)
+                    # train_data_set = np.nan_to_num(train_data_set, nan=0) # replace nan values with 0
+
+                    train_label_set = np.concatenate((train_label_set, lables), axis=0)
+            else:
+                test_data_set, test_label_set = getDataSamples(EEG_samples, partic_id)
+                test_data_set = np.nan_to_num(test_data_set, nan=0) # replace nan values with 0
+
+                valid_data_set, valid_label_set = getDataSamples(EEG_samples, partic_id)
+                valid_data_set = np.nan_to_num(valid_data_set, nan=0) # replace nan values with 0
+
+                if normalize:
+                    test_data_set = normalizeSamples(test_data_set)
+                    valid_data_set = normalizeSamples(valid_data_set)
+                
+
+        train_data_set, train_label_set = balanceClasses(train_data_set, train_label_set) # for ensuring a 50:50 ratio between sick and non-sick
+
+        data_set = np.concatenate((train_data_set, test_data_set), axis=0)
+        label_set = np.concatenate((train_label_set, test_label_set), axis=0)
+
+        return [data_set, label_set], [train_data_set, train_label_set], [test_data_set, test_label_set]
+    else:
+        train_pid = [# sick 
+                     1, 4, 8, 9, 11, 14, 15,
+                     # non-sick
+                     2, 3, 6, 7, 10, 12,
+                     # conventional
+                     # non-conventional
+                     5, 18
+                     ]
+        test_pid = [# sick
+                    17, 19, 28, 29,
+                    # non-sick
+                    23, 24, 25, 26, 16,
+                    # conventional
+                    13, 20, 22,
+                    # non-conventional
+                    21, 27
+                    ]
+        for pid in train_pid:
+            pid = pid - 1 # accounting for zero indexing
+            epoches, lables = getDataSamples(EEG_samples, pid)
 
             if not np.any(train_data_set):
                 train_data_set = epoches
                 train_label_set = lables
             else:
                 train_data_set = np.concatenate((train_data_set, epoches), axis=0)
-                # train_data_set = np.nan_to_num(train_data_set, nan=0) # replace nan values with 0
-
                 train_label_set = np.concatenate((train_label_set, lables), axis=0)
-        else:
-            test_data_set, test_label_set = getDataSamples(EEG_samples, partic_id)
-            test_data_set = np.nan_to_num(test_data_set, nan=0) # replace nan values with 0
 
-            valid_data_set, valid_label_set = getDataSamples(EEG_samples, partic_id)
-            valid_data_set = np.nan_to_num(valid_data_set, nan=0) # replace nan values with 0
+        for pid in test_pid:
+            pid = pid - 1 # accounting for zero indexing
+            epoches, lables = getDataSamples(EEG_samples, pid)
 
-            if normalize:
-                test_data_set = normalizeSamples(test_data_set)
-                valid_data_set = normalizeSamples(valid_data_set)
-            
 
-    train_data_set, train_label_set = balanceClasses(train_data_set, train_label_set) # for ensuring a 50:50 ratio between sick and non-sick
+            if not np.any(test_data_set):
+                test_data_set = epoches
+                test_label_set = lables
+            else:
+                test_data_set = np.concatenate((test_data_set, epoches), axis=0)
+                test_label_set = np.concatenate((test_label_set, lables), axis=0)
 
-    data_set = np.concatenate((train_data_set, test_data_set), axis=0)
-    label_set = np.concatenate((train_label_set, test_label_set), axis=0)
+        data_set = np.concatenate((train_data_set, test_data_set), axis=0)
+        label_set = np.concatenate((train_label_set, test_label_set), axis=0)
 
-    return [data_set, label_set], [train_data_set, train_label_set], [test_data_set, test_label_set]
+        if normalize:
+            min_value = np.min(data_set)
+            max_value = np.max(data_set)
+
+            print("Minimum Value: "+str(min_value))
+            print("Maximum Value: "+str(max_value))
+
+            train_data_set = normalizeWithParameters(train_data_set, min_value, max_value)
+            test_data_set = normalizeWithParameters(test_data_set, min_value, max_value)
+            data_set = normalizeWithParameters(data_set, min_value, max_value)
+
+        return [data_set, label_set], [train_data_set, train_label_set], [test_data_set, test_label_set]
 
 def generateTrainTestByFile(filename,  LOU_subject_id, normalize = False): # This generates the Train-Test set using a HDF5 file format
     file_name = filename
