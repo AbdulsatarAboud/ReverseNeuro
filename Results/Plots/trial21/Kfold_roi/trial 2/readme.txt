@@ -1,0 +1,1 @@
+This trial used the pwelch function to calculate PSD. The output of pwelch is in uV^2/Hz

@@ -1,0 +1,1 @@
+This trial used the spectopo function to calculate PSD. The output of spectopo is in dB/Hz
