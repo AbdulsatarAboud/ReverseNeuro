@@ -401,3 +401,38 @@ def train(net, train_loader, valid_loader, epoches, file_name):
         appendToFile(info, file_name)
 
     return net
+
+def getSortedIndex(array, rank):
+
+    probabilities = np.array(array)
+    indices_results = []
+
+    if (rank == 'best'): 
+
+        # Get indices of probabilities that are above 0.5
+        indices = np.where(probabilities > 0.5)[0]
+
+        # Get the probabilities and corresponding indices for these probabilities
+        prob_and_indices = [(prob, idx) for prob, idx in zip(probabilities[indices], indices)]
+
+        # Sort the probabilities and indices in descending order of probabilities
+        prob_and_indices.sort(key=lambda x: x[0], reverse=True)
+
+        # Get the indices of the 10 highest probabilities (or all of them if there are less than 10)
+        indices_results = [idx for prob, idx in prob_and_indices[:10]]
+    else: # worst
+        # Get indices of probabilities that are below or equal to 0.5
+        indices = np.where(probabilities <= 0.5)[0]
+
+        # Get the probabilities and corresponding indices for these probabilities
+        prob_and_indices = [(prob, idx) for prob, idx in zip(probabilities[indices], indices)]
+
+        # Sort the probabilities and indices in ascending order of probabilities
+        prob_and_indices.sort(key=lambda x: x[0])
+
+        # Get the indices of the 10 lowest probabilities (or all of them if there are less than 10)
+        indices_results = [idx for prob, idx in prob_and_indices[:10]]
+        
+
+    return indices_results
+
